@@ -6,15 +6,15 @@ import Link from "next/link";
 
 const CONOCIMIENTO_OPTIONS = [
   "Nada",
-  "Algo basico",
+  "Algo básico",
   "Tengo buen conocimiento",
   "Nivel avanzado",
 ];
 
-const USO_OPTIONS = ["Nunca", "Rara vez", "A veces", "Todos los dias"];
+const USO_OPTIONS = ["Nunca", "Rara vez", "A veces", "Todos los días"];
 
 const INTERES_OPTIONS = [
-  "Si, me interesa mucho",
+  "Sí, me interesa mucho",
   "Tal vez, depende de la fecha",
   "No por ahora",
 ];
@@ -92,7 +92,7 @@ export default function Encuesta() {
   const [enviando, setEnviando] = useState(false);
 
   const showFecha =
-    interes === "Si, me interesa mucho" ||
+    interes === "Sí, me interesa mucho" ||
     interes === "Tal vez, depende de la fecha";
 
   const isValid =
@@ -131,7 +131,7 @@ export default function Encuesta() {
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6 font-sans dark:bg-black">
         <main className="flex flex-col items-center gap-6 text-center">
           <h1 className="text-3xl font-semibold text-black dark:text-zinc-50">
-            Gracias por responder!
+            ¡Gracias por responder!
           </h1>
           <p className="max-w-sm text-zinc-600 dark:text-zinc-400">
             Te contactaremos para confirmar los detalles de la clase.
@@ -156,8 +156,8 @@ export default function Encuesta() {
           </h1>
           <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
             Estoy organizando una clase presencial y gratuita sobre
-            Inteligencia Artificial. Me encantaria saber si te interesa y
-            cuando podrias asistir.
+            Inteligencia Artificial. Me encantaría saber si te interesa y
+            cuándo podrías asistir.
           </p>
         </div>
 
@@ -212,14 +212,14 @@ export default function Encuesta() {
 
           {/* Preguntas */}
           <RadioGroup
-            label="4. Que tanto sabes de IA?"
+            label="4. ¿Qué tanto sabes de IA?"
             options={CONOCIMIENTO_OPTIONS}
             value={conocimiento}
             onChange={setConocimiento}
           />
 
           <RadioGroup
-            label="5. Que tanto usas IA en tu dia a dia?"
+            label="5. ¿Qué tanto usas IA en tu día a día?"
             options={USO_OPTIONS}
             value={uso}
             onChange={setUso}
@@ -228,7 +228,7 @@ export default function Encuesta() {
           <hr className="border-zinc-200 dark:border-zinc-800" />
 
           <RadioGroup
-            label="6. Te interesaria asistir a una clase presencial gratuita sobre IA?"
+            label="6. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
             options={INTERES_OPTIONS}
             value={interes}
             onChange={(v) => {
@@ -239,7 +239,7 @@ export default function Encuesta() {
 
           {showFecha && (
             <RadioGroup
-              label="7. Que fecha te acomoda mas?"
+              label="7. ¿Qué fecha te acomoda más?"
               options={FECHA_OPTIONS}
               value={fecha}
               onChange={setFecha}
@@ -248,7 +248,7 @@ export default function Encuesta() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {showFecha ? "8" : "7"}. Que te gustaria aprender sobre IA?{" "}
+              {showFecha ? "8" : "7"}. ¿Qué te gustaría aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea
@@ -256,7 +256,7 @@ export default function Encuesta() {
               onChange={(e) => setQueAprender(e.target.value)}
               rows={3}
               className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
-              placeholder="Escribe aqui..."
+              placeholder="Escribe aquí..."
             />
           </div>
 

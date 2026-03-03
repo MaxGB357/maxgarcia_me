@@ -13,6 +13,14 @@ const CONOCIMIENTO_OPTIONS = [
 
 const USO_OPTIONS = ["Nunca", "Rara vez", "A veces", "Todos los días"];
 
+const HERRAMIENTAS_OPTIONS = [
+  "ChatGPT",
+  "Claude",
+  "Gemini",
+  "Perplexity",
+  "Grok",
+];
+
 const INTERES_OPTIONS = [
   "Sí, me interesa mucho",
   "Tal vez, depende de la fecha",
@@ -79,12 +87,111 @@ function RadioGroup({
   );
 }
 
+function CheckboxGroup({
+  label,
+  options,
+  selected,
+  onToggle,
+  otherValue,
+  onOtherChange,
+}: {
+  label: string;
+  options: string[];
+  selected: string[];
+  onToggle: (v: string) => void;
+  otherValue: string;
+  onOtherChange: (v: string) => void;
+}) {
+  const otherChecked = selected.includes("Otros");
+  return (
+    <fieldset className="flex flex-col gap-3">
+      <legend className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        {label}
+      </legend>
+      <div className="flex flex-col gap-2">
+        {options.map((option) => (
+          <label
+            key={option}
+            className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors ${
+              selected.includes(option)
+                ? "border-black bg-zinc-100 text-black dark:border-white dark:bg-zinc-800 dark:text-white"
+                : "border-zinc-200 text-zinc-600 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-500"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={selected.includes(option)}
+              onChange={() => onToggle(option)}
+              className="sr-only"
+            />
+            <span
+              className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                selected.includes(option)
+                  ? "border-black bg-black dark:border-white dark:bg-white"
+                  : "border-zinc-400 dark:border-zinc-600"
+              }`}
+            >
+              {selected.includes(option) && (
+                <svg className="h-3 w-3 text-white dark:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </span>
+            {option}
+          </label>
+        ))}
+        {/* Otros */}
+        <label
+          className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors ${
+            otherChecked
+              ? "border-black bg-zinc-100 text-black dark:border-white dark:bg-zinc-800 dark:text-white"
+              : "border-zinc-200 text-zinc-600 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-500"
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={otherChecked}
+            onChange={() => onToggle("Otros")}
+            className="sr-only"
+          />
+          <span
+            className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+              otherChecked
+                ? "border-black bg-black dark:border-white dark:bg-white"
+                : "border-zinc-400 dark:border-zinc-600"
+            }`}
+          >
+            {otherChecked && (
+              <svg className="h-3 w-3 text-white dark:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </span>
+          Otros
+        </label>
+        {otherChecked && (
+          <input
+            type="text"
+            value={otherValue}
+            onChange={(e) => onOtherChange(e.target.value)}
+            className="ml-7 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+            placeholder="¿Cuál?"
+          />
+        )}
+      </div>
+    </fieldset>
+  );
+}
+
 export default function Encuesta() {
   const [nombre, setNombre] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [email, setEmail] = useState("");
   const [conocimiento, setConocimiento] = useState("");
   const [uso, setUso] = useState("");
+  const [usosDescripcion, setUsosDescripcion] = useState("");
+  const [herramientas, setHerramientas] = useState<string[]>([]);
+  const [herramientasOtros, setHerramientasOtros] = useState("");
   const [interes, setInteres] = useState("");
   const [fecha, setFecha] = useState("");
   const [queAprender, setQueAprender] = useState("");
@@ -104,6 +211,15 @@ export default function Encuesta() {
     interes &&
     (!showFecha || fecha);
 
+  function toggleHerramienta(h: string) {
+    setHerramientas((prev) =>
+      prev.includes(h) ? prev.filter((x) => x !== h) : [...prev, h]
+    );
+    if (h === "Otros" && herramientas.includes("Otros")) {
+      setHerramientasOtros("");
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!isValid) return;
@@ -115,6 +231,17 @@ export default function Encuesta() {
       email,
       conocimiento_ia: conocimiento,
       uso_ia: uso,
+      usos_ia: usosDescripcion || null,
+      herramientas_ia:
+        herramientas.length > 0
+          ? herramientas
+              .map((h) =>
+                h === "Otros" && herramientasOtros
+                  ? `Otros: ${herramientasOtros}`
+                  : h
+              )
+              .join(", ")
+          : null,
       interes,
       fecha_preferida: showFecha ? fecha : "No aplica",
       que_aprender: queAprender || null,
@@ -225,10 +352,33 @@ export default function Encuesta() {
             onChange={setUso}
           />
 
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              6. ¿Para qué has usado la IA?{" "}
+              <span className="font-normal text-zinc-400">(opcional)</span>
+            </label>
+            <textarea
+              value={usosDescripcion}
+              onChange={(e) => setUsosDescripcion(e.target.value)}
+              rows={3}
+              className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+              placeholder="Ej: buscar información, redactar textos, programar..."
+            />
+          </div>
+
+          <CheckboxGroup
+            label="7. ¿Qué herramientas de IA usas actualmente?"
+            options={HERRAMIENTAS_OPTIONS}
+            selected={herramientas}
+            onToggle={toggleHerramienta}
+            otherValue={herramientasOtros}
+            onOtherChange={setHerramientasOtros}
+          />
+
           <hr className="border-zinc-200 dark:border-zinc-800" />
 
           <RadioGroup
-            label="6. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
+            label="8. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
             options={INTERES_OPTIONS}
             value={interes}
             onChange={(v) => {
@@ -239,7 +389,7 @@ export default function Encuesta() {
 
           {showFecha && (
             <RadioGroup
-              label="7. ¿Qué fecha te acomoda más?"
+              label="9. ¿Qué fecha te acomoda más?"
               options={FECHA_OPTIONS}
               value={fecha}
               onChange={setFecha}
@@ -248,7 +398,7 @@ export default function Encuesta() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {showFecha ? "8" : "7"}. ¿Qué te gustaría aprender sobre IA?{" "}
+              {showFecha ? "10" : "9"}. ¿Qué te gustaría aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea

@@ -91,8 +91,18 @@ export default function Encuesta() {
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
 
+  const showFecha =
+    interes === "Si, me interesa mucho" ||
+    interes === "Tal vez, depende de la fecha";
+
   const isValid =
-    nombre && whatsapp && email && conocimiento && uso && interes && fecha;
+    nombre &&
+    whatsapp &&
+    email &&
+    conocimiento &&
+    uso &&
+    interes &&
+    (!showFecha || fecha);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -106,7 +116,7 @@ export default function Encuesta() {
       conocimiento_ia: conocimiento,
       uso_ia: uso,
       interes,
-      fecha_preferida: fecha,
+      fecha_preferida: showFecha ? fecha : "No aplica",
       que_aprender: queAprender || null,
     });
 
@@ -156,7 +166,7 @@ export default function Encuesta() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Nombre completo
+                1. Nombre completo
               </label>
               <input
                 type="text"
@@ -170,7 +180,7 @@ export default function Encuesta() {
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                WhatsApp
+                2. WhatsApp
               </label>
               <input
                 type="tel"
@@ -184,7 +194,7 @@ export default function Encuesta() {
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                Email
+                3. Email
               </label>
               <input
                 type="email"
@@ -202,14 +212,14 @@ export default function Encuesta() {
 
           {/* Preguntas */}
           <RadioGroup
-            label="Que tanto sabes de IA?"
+            label="4. Que tanto sabes de IA?"
             options={CONOCIMIENTO_OPTIONS}
             value={conocimiento}
             onChange={setConocimiento}
           />
 
           <RadioGroup
-            label="Que tanto usas IA en tu dia a dia?"
+            label="5. Que tanto usas IA en tu dia a dia?"
             options={USO_OPTIONS}
             value={uso}
             onChange={setUso}
@@ -218,22 +228,27 @@ export default function Encuesta() {
           <hr className="border-zinc-200 dark:border-zinc-800" />
 
           <RadioGroup
-            label="Te interesaria asistir a una clase presencial gratuita sobre IA?"
+            label="6. Te interesaria asistir a una clase presencial gratuita sobre IA?"
             options={INTERES_OPTIONS}
             value={interes}
-            onChange={setInteres}
+            onChange={(v) => {
+              setInteres(v);
+              if (v === "No por ahora") setFecha("");
+            }}
           />
 
-          <RadioGroup
-            label="Que fecha te acomoda mas?"
-            options={FECHA_OPTIONS}
-            value={fecha}
-            onChange={setFecha}
-          />
+          {showFecha && (
+            <RadioGroup
+              label="7. Que fecha te acomoda mas?"
+              options={FECHA_OPTIONS}
+              value={fecha}
+              onChange={setFecha}
+            />
+          )}
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Que te gustaria aprender sobre IA?{" "}
+              {showFecha ? "8" : "7"}. Que te gustaria aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea

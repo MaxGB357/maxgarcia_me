@@ -192,6 +192,7 @@ export default function Encuesta() {
   const [usosDescripcion, setUsosDescripcion] = useState("");
   const [herramientas, setHerramientas] = useState<string[]>([]);
   const [herramientasOtros, setHerramientasOtros] = useState("");
+  const [casosUsoPendientes, setCasosUsoPendientes] = useState("");
   const [interes, setInteres] = useState("");
   const [fecha, setFecha] = useState("");
   const [queAprender, setQueAprender] = useState("");
@@ -242,6 +243,7 @@ export default function Encuesta() {
               )
               .join(", ")
           : null,
+      casos_uso_pendientes: casosUsoPendientes || null,
       interes,
       fecha_preferida: showFecha ? fecha : "No aplica",
       que_aprender: queAprender || null,
@@ -375,10 +377,24 @@ export default function Encuesta() {
             onOtherChange={setHerramientasOtros}
           />
 
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              8. ¿Hay algo que te gustaría hacer con IA pero no has podido o no sabes si se puede?{" "}
+              <span className="font-normal text-zinc-400">(opcional)</span>
+            </label>
+            <textarea
+              value={casosUsoPendientes}
+              onChange={(e) => setCasosUsoPendientes(e.target.value)}
+              rows={3}
+              className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+              placeholder="Ej: automatizar reportes, analizar datos de ventas, traducir documentos..."
+            />
+          </div>
+
           <hr className="border-zinc-200 dark:border-zinc-800" />
 
           <RadioGroup
-            label="8. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
+            label="9. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
             options={INTERES_OPTIONS}
             value={interes}
             onChange={(v) => {
@@ -389,7 +405,7 @@ export default function Encuesta() {
 
           {showFecha && (
             <RadioGroup
-              label="9. ¿Qué fecha te acomoda más?"
+              label="10. ¿Qué fecha te acomoda más?"
               options={FECHA_OPTIONS}
               value={fecha}
               onChange={setFecha}
@@ -398,7 +414,7 @@ export default function Encuesta() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {showFecha ? "10" : "9"}. ¿Qué te gustaría aprender sobre IA?{" "}
+              {showFecha ? "11" : "10"}. ¿Qué te gustaría aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea

@@ -19,6 +19,7 @@ const HERRAMIENTAS_OPTIONS = [
   "Gemini",
   "Perplexity",
   "Grok",
+  "NotebookLM",
 ];
 
 const INTERES_OPTIONS = [

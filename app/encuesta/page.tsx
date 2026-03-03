@@ -39,15 +39,17 @@ function RadioGroup({
   options,
   value,
   onChange,
+  error,
 }: {
   label: string;
   options: string[];
   value: string;
   onChange: (v: string) => void;
+  error?: boolean;
 }) {
   return (
     <fieldset className="flex flex-col gap-3">
-      <legend className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <legend className={`text-sm font-medium ${error ? "text-red-500" : "text-zinc-700 dark:text-zinc-300"}`}>
         {label}
       </legend>
       <div className="flex flex-col gap-2">
@@ -198,6 +200,7 @@ export default function Encuesta() {
   const [queAprender, setQueAprender] = useState("");
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
+  const [intentoEnvio, setIntentoEnvio] = useState(false);
 
   const showFecha =
     interes === "Sí, me interesa mucho" ||
@@ -223,6 +226,7 @@ export default function Encuesta() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setIntentoEnvio(true);
     if (!isValid) return;
 
     setEnviando(true);
@@ -294,43 +298,40 @@ export default function Encuesta() {
           {/* Datos de contacto */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className={`text-sm font-medium ${intentoEnvio && !nombre ? "text-red-500" : "text-zinc-700 dark:text-zinc-300"}`}>
                 1. Nombre completo
               </label>
               <input
                 type="text"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                required
-                className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+                className={`rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none dark:bg-zinc-900 dark:text-zinc-100 ${intentoEnvio && !nombre ? "border-red-400 focus:border-red-500" : "border-zinc-300 focus:border-zinc-500 dark:border-zinc-700 dark:focus:border-zinc-500"}`}
                 placeholder="Tu nombre"
               />
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className={`text-sm font-medium ${intentoEnvio && !whatsapp ? "text-red-500" : "text-zinc-700 dark:text-zinc-300"}`}>
                 2. WhatsApp
               </label>
               <input
                 type="tel"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
-                required
-                className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+                className={`rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none dark:bg-zinc-900 dark:text-zinc-100 ${intentoEnvio && !whatsapp ? "border-red-400 focus:border-red-500" : "border-zinc-300 focus:border-zinc-500 dark:border-zinc-700 dark:focus:border-zinc-500"}`}
                 placeholder="+56 9 1234 5678"
               />
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className={`text-sm font-medium ${intentoEnvio && !email ? "text-red-500" : "text-zinc-700 dark:text-zinc-300"}`}>
                 3. Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-                className="rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-zinc-500"
+                className={`rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none dark:bg-zinc-900 dark:text-zinc-100 ${intentoEnvio && !email ? "border-red-400 focus:border-red-500" : "border-zinc-300 focus:border-zinc-500 dark:border-zinc-700 dark:focus:border-zinc-500"}`}
                 placeholder="tu@email.com"
               />
             </div>
@@ -345,6 +346,7 @@ export default function Encuesta() {
             options={CONOCIMIENTO_OPTIONS}
             value={conocimiento}
             onChange={setConocimiento}
+            error={intentoEnvio && !conocimiento}
           />
 
           <RadioGroup
@@ -352,6 +354,7 @@ export default function Encuesta() {
             options={USO_OPTIONS}
             value={uso}
             onChange={setUso}
+            error={intentoEnvio && !uso}
           />
 
           <div className="flex flex-col gap-1.5">
@@ -401,6 +404,7 @@ export default function Encuesta() {
               setInteres(v);
               if (v === "No por ahora") setFecha("");
             }}
+            error={intentoEnvio && !interes}
           />
 
           {showFecha && (
@@ -409,6 +413,7 @@ export default function Encuesta() {
               options={FECHA_OPTIONS}
               value={fecha}
               onChange={setFecha}
+              error={intentoEnvio && !fecha}
             />
           )}
 
@@ -426,9 +431,15 @@ export default function Encuesta() {
             />
           </div>
 
+          {intentoEnvio && !isValid && (
+            <p className="text-sm text-red-500">
+              Por favor completa los campos obligatorios marcados en rojo.
+            </p>
+          )}
+
           <button
             type="submit"
-            disabled={!isValid || enviando}
+            disabled={enviando}
             className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-40 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
           >
             {enviando ? "Enviando..." : "Enviar respuesta"}

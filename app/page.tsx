@@ -7,12 +7,20 @@ export default function Home() {
         <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-zinc-50">
           Hola mundo soy Max
         </h1>
-        <Link
-          href="/encuesta"
-          className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
-        >
-          Ir a Encuesta
-        </Link>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/encuesta"
+            className="rounded-full bg-black px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+          >
+            Encuesta IA
+          </Link>
+          <Link
+            href="/encuesta-tenis"
+            className="rounded-full border border-black px-6 py-3 text-center text-sm font-medium text-black transition-colors hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black"
+          >
+            Encuesta Tenis
+          </Link>
+        </div>
       </main>
     </div>
   );

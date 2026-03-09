@@ -184,7 +184,7 @@
 
     <!-- Pregunta 3 -->
     <fieldset>
-      <legend>3. Datos de contacto <span class="optional">(opcional)</span></legend>
+      <legend id="legend-contacto">3. Datos de contacto</legend>
       <div class="input-group">
         <label for="telefono">Número de teléfono</label>
         <input type="tel" id="telefono" placeholder="+56 9 1234 5678">
@@ -232,9 +232,24 @@
   form.addEventListener('submit', function(e){
     e.preventDefault();
 
+    var telefono = document.getElementById('telefono').value.trim();
+    var correo = document.getElementById('correo').value.trim();
+    var legendContacto = document.getElementById('legend-contacto');
+
+    // Reset error states
+    legendContacto.classList.remove('error');
+
     if(!asistencia){
+      error.textContent = 'Por favor selecciona cómo asistirás.';
       error.style.display = 'block';
       document.getElementById('fs-asistencia').querySelector('legend').classList.add('error');
+      return;
+    }
+
+    if(!telefono && !correo){
+      error.textContent = 'Por favor ingresa al menos un dato de contacto.';
+      error.style.display = 'block';
+      legendContacto.classList.add('error');
       return;
     }
 
@@ -242,14 +257,12 @@
     btn.textContent = 'Enviando...';
 
     var comentario = document.getElementById('comentario').value.trim() || null;
-    var telefono = document.getElementById('telefono').value.trim() || null;
-    var correo = document.getElementById('correo').value.trim() || null;
 
     sb.from('ai_encuesta').insert({
       asistencia: asistencia,
       comentario: comentario,
-      telefono: telefono,
-      correo: correo
+      telefono: telefono || null,
+      correo: correo || null
     }).then(function(res){
       if(res.error){
         btn.disabled = false;

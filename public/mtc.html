@@ -26,7 +26,12 @@
 
   .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
   .section { background: white; border-radius: 12px; padding: 2rem; margin: 1.5rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.04); scroll-margin-top: 3.2rem; }
-  .section h2 { color: var(--azul-prof); font-size: 1.35rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--azul-ai); }
+  .section h2 { color: var(--azul-prof); font-size: 1.35rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--azul-ai); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+  .section h2::after { content: '\25B2'; font-size: 0.7rem; color: var(--azul-ai); transition: transform 0.3s ease; }
+  .section.collapsed h2 { margin-bottom: 0; padding-bottom: 0.5rem; }
+  .section.collapsed h2::after { transform: rotate(180deg); }
+  .section-body { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; }
+  .section.collapsed .section-body { max-height: 0 !important; opacity: 0; }
   .section h3 { color: var(--negro); font-size: 1.05rem; margin: 1.4rem 0 0.6rem; }
   .section p { margin-bottom: 0.8rem; font-size: 0.9rem; }
 
@@ -132,18 +137,19 @@
 <div class="container">
 <div class="section" id="contexto">
   <h2>1. Contexto</h2>
+  <div class="section-body">
+    <p>Existe un negocio en operaci&oacute;n basado en el modelo de <strong>Venta Calzada</strong> de JP, que opera a trav&eacute;s de canales digitales (sitio web y Mercado Libre). El modelo se fundamenta en vender primero y comprar despu&eacute;s (venta en verde).</p>
 
-  <p>Existe un negocio en operaci&oacute;n basado en el modelo de <strong>Venta Calzada</strong> de JP, que opera a trav&eacute;s de canales digitales (sitio web y Mercado Libre). El modelo se fundamenta en vender primero y comprar despu&eacute;s (venta en verde).</p>
+    <p>Las ventas actuales se ubican entre <strong>15 y 20 MM mensuales</strong>, sostenidas por una operaci&oacute;n reducida:</p>
+    <ul style="font-size:0.9rem; margin: 0 0 0.8rem 1.5rem;">
+      <li>1 persona de backoffice (operaciones, log&iacute;stica y &oacute;rdenes de compra)</li>
+      <li>1 persona dedicada a la carga de informaci&oacute;n en el sistema</li>
+    </ul>
 
-  <p>Las ventas actuales se ubican entre <strong>15 y 20 MM mensuales</strong>, sostenidas por una operaci&oacute;n reducida:</p>
-  <ul style="font-size:0.9rem; margin: 0 0 0.8rem 1.5rem;">
-    <li>1 persona de backoffice (operaciones, log&iacute;stica y &oacute;rdenes de compra)</li>
-    <li>1 persona dedicada a la carga de informaci&oacute;n en el sistema</li>
-  </ul>
-
-  <div class="alert alert-gold">
-    <strong>Situaci&oacute;n clave:</strong>
-    <p style="margin:0">Actualmente no existen esfuerzos comerciales activos: no hay generaci&oacute;n de tr&aacute;fico, marketing digital ni captaci&oacute;n de leads.</p>
+    <div class="alert alert-gold">
+      <strong>Situaci&oacute;n clave:</strong>
+      <p style="margin:0">Actualmente no existen esfuerzos comerciales activos: no hay generaci&oacute;n de tr&aacute;fico, marketing digital ni captaci&oacute;n de leads.</p>
+    </div>
   </div>
 </div>
 
@@ -152,38 +158,39 @@
 <!-- ============================================================ -->
 <div class="section" id="hipotesis">
   <h2>2. Hip&oacute;tesis</h2>
-
-  <div class="alert alert-teal">
-    <strong>Premisa:</strong>
-    <p style="margin:0">Es posible <strong>incrementar las ventas</strong> sin modificar el modelo de negocios actual.</p>
-  </div>
-
-  <h3>Etapa 1</h3>
-
-  <div class="g2">
-    <div class="card">
-      <h4>1. Nuevo sitio web</h4>
-      <p style="font-size:0.85rem; margin-bottom:0.3rem;"><span class="tag tag-teal">A/B Testing</span></p>
-      <ul style="font-size:0.85rem; margin: 0.5rem 0 0 1.2rem;">
-        <li>Operaci&oacute;n sencilla para carga de datos (precios, productos, im&aacute;genes)</li>
-        <li>Gesti&oacute;n &aacute;gil de ofertas y promociones</li>
-        <li>Chatbot de atenci&oacute;n al cliente</li>
-      </ul>
+  <div class="section-body">
+    <div class="alert alert-teal">
+      <strong>Premisa:</strong>
+      <p style="margin:0">Es posible <strong>incrementar las ventas</strong> sin modificar el modelo de negocios actual.</p>
     </div>
-    <div class="card">
-      <h4>2. Redise&ntilde;o del sistema y flujo de datos</h4>
-      <p style="font-size:0.85rem; margin-bottom:0.3rem;"><span class="tag tag-gold">Definir KPIs</span> <span class="tag tag-green">Establecer baseline</span></p>
-      <ul style="font-size:0.85rem; margin: 0.5rem 0 0 1.2rem;">
-        <li>Automatizaci&oacute;n de procesos operativos</li>
-        <li>Acceso centralizado a la informaci&oacute;n</li>
-        <li>Arquitectura preparada para integraci&oacute;n con otros canales (ej: marketplaces)</li>
-      </ul>
-    </div>
-  </div>
 
-  <div class="alert alert-green" style="margin-top:1.2rem;">
-    <strong>Hito / Checkpoint:</strong>
-    <p style="margin:0">Evaluar el impacto de ambas iniciativas antes de avanzar a las siguientes etapas.</p>
+    <h3>Etapa 1</h3>
+
+    <div class="g2">
+      <div class="card">
+        <h4>1. Nuevo sitio web</h4>
+        <p style="font-size:0.85rem; margin-bottom:0.3rem;"><span class="tag tag-teal">A/B Testing</span></p>
+        <ul style="font-size:0.85rem; margin: 0.5rem 0 0 1.2rem;">
+          <li>Operaci&oacute;n sencilla para carga de datos (precios, productos, im&aacute;genes)</li>
+          <li>Gesti&oacute;n &aacute;gil de ofertas y promociones</li>
+          <li>Chatbot de atenci&oacute;n al cliente</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>2. Redise&ntilde;o del sistema y flujo de datos</h4>
+        <p style="font-size:0.85rem; margin-bottom:0.3rem;"><span class="tag tag-gold">Definir KPIs</span> <span class="tag tag-green">Establecer baseline</span></p>
+        <ul style="font-size:0.85rem; margin: 0.5rem 0 0 1.2rem;">
+          <li>Automatizaci&oacute;n de procesos operativos</li>
+          <li>Acceso centralizado a la informaci&oacute;n</li>
+          <li>Arquitectura preparada para integraci&oacute;n con otros canales (ej: marketplaces)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-green" style="margin-top:1.2rem;">
+      <strong>Hito / Checkpoint:</strong>
+      <p style="margin:0">Evaluar el impacto de ambas iniciativas antes de avanzar a las siguientes etapas.</p>
+    </div>
   </div>
 </div>
 
@@ -192,28 +199,27 @@
 <!-- ============================================================ -->
 <div class="section" id="acciones">
   <h2>3. Acciones</h2>
+  <div class="section-body">
+    <h3>Investigaciones pendientes</h3>
 
-  <h3>Investigaciones pendientes</h3>
+    <div class="action-item">
+      <div class="task">Relevar el flujo de informaci&oacute;n en PrestaShop y el workflow operativo actual</div>
+      <div class="owner">[Por definir]</div>
+      <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
+    </div>
 
-  <div class="action-item">
-    <div class="task">Relevar el flujo de informaci&oacute;n en PrestaShop y el workflow operativo actual</div>
-    <div class="owner">[Por definir]</div>
-    <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
+    <div class="action-item">
+      <div class="task">Reuni&oacute;n con Imar: revisar el flujo de checkout y la experiencia de compra</div>
+      <div class="owner">[Por definir]</div>
+      <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
+    </div>
+
+    <div class="action-item">
+      <div class="task">Reuni&oacute;n con JP: diagnosticar la situaci&oacute;n actual con planillas y flujo de datos</div>
+      <div class="owner">[Por definir]</div>
+      <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
+    </div>
   </div>
-
-  <div class="action-item">
-    <div class="task">Reuni&oacute;n con Imar: revisar el flujo de checkout y la experiencia de compra</div>
-    <div class="owner">[Por definir]</div>
-    <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
-  </div>
-
-  <div class="action-item">
-    <div class="task">Reuni&oacute;n con JP: diagnosticar la situaci&oacute;n actual con planillas y flujo de datos</div>
-    <div class="owner">[Por definir]</div>
-    <div class="deadline"><span class="tag tag-gold">Por agendar</span></div>
-  </div>
-
-
 </div>
 
 </div><!-- /container -->
@@ -225,6 +231,7 @@
 
 <script>
 (function(){
+  // Navbar active state
   var links = document.querySelectorAll('.navbar a');
   var sections = [];
   links.forEach(function(a){
@@ -243,6 +250,24 @@
   }
   window.addEventListener('scroll', update);
   update();
+
+  // Collapsible sections
+  document.querySelectorAll('.section h2').forEach(function(h2){
+    var body = h2.nextElementSibling;
+    if(!body || !body.classList.contains('section-body')) return;
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.style.opacity = '1';
+    h2.addEventListener('click', function(){
+      var section = h2.parentElement;
+      if(section.classList.contains('collapsed')){
+        section.classList.remove('collapsed');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.style.opacity = '1';
+      } else {
+        section.classList.add('collapsed');
+      }
+    });
+  });
 })();
 </script>
 </body>

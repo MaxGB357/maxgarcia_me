@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hola Patricia!</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: white;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    animation: bounce 2s ease infinite;
+    user-select: none;
+    text-align: center;
+    padding: 0 1rem;
+    z-index: 10;
+    position: relative;
+  }
+
+  .subtitle {
+    color: rgba(255,255,255,0.8);
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    margin-top: 1rem;
+    animation: fadeIn 2s ease 0.5s both;
+    z-index: 10;
+    position: relative;
+  }
+
+  .click-hint {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    margin-top: 2rem;
+    animation: pulse 2s ease infinite;
+    z-index: 10;
+    position: relative;
+  }
+
+  .emoji-rain {
+    position: fixed;
+    font-size: 1.8rem;
+    pointer-events: none;
+    animation: fall linear forwards;
+    z-index: 5;
+  }
+
+  .spark {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: sparkle 0.8s ease-out forwards;
+    z-index: 20;
+  }
+
+  .color-burst {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: burst 0.6s ease-out forwards;
+    z-index: 15;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes sparkle {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0); opacity: 0; }
+  }
+
+  @keyframes burst {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(2.5); opacity: 0.7; }
+    100% { transform: scale(0); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1 id="title">Hola Patricia!</h1>
+<p class="subtitle" id="subtitle">Bienvenida</p>
+<p class="click-hint">Haz clic en cualquier lugar</p>
+
+<script>
+const emojis = ['🌸', '✨', '🦋', '💜', '🎀', '🌺', '💫', '🌷', '⭐', '🎉'];
+const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A8E6CF', '#FF8B94', '#DDA0DD', '#87CEEB', '#F0E68C', '#FFB6C1', '#98FB98'];
+const gradients = [
+  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+  'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+  'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)',
+  'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+];
+const messages = ['Bienvenida', 'Que tengas un gran dia', 'Sigue brillando', 'Eres increible', 'El mundo es tuyo'];
+
+let clickCount = 0;
+
+function createEmoji() {
+  var el = document.createElement('div');
+  el.className = 'emoji-rain';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.animationDuration = (2 + Math.random() * 3) + 's';
+  document.body.appendChild(el);
+  setTimeout(function() { el.remove(); }, 5000);
+}
+
+function createSpark(x, y) {
+  for (var i = 0; i < 8; i++) {
+    var spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = x + 'px';
+    spark.style.top = y + 'px';
+    spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+    var angle = (Math.PI * 2 / 8) * i;
+    var dist = 30 + Math.random() * 40;
+    spark.style.left = (x + Math.cos(angle) * dist) + 'px';
+    spark.style.top = (y + Math.sin(angle) * dist) + 'px';
+    document.body.appendChild(spark);
+    setTimeout(function(s) { s.remove(); }.bind(null, spark), 800);
+  }
+}
+
+function createBurst(x, y) {
+  var burst = document.createElement('div');
+  burst.className = 'color-burst';
+  burst.style.left = (x - 10) + 'px';
+  burst.style.top = (y - 10) + 'px';
+  burst.style.background = colors[Math.floor(Math.random() * colors.length)];
+  document.body.appendChild(burst);
+  setTimeout(function() { burst.remove(); }, 600);
+}
+
+document.body.addEventListener('click', function(e) {
+  clickCount++;
+  createSpark(e.clientX, e.clientY);
+  createBurst(e.clientX, e.clientY);
+
+  for (var i = 0; i < 5; i++) {
+    setTimeout(createEmoji, i * 100);
+  }
+
+  document.body.style.background = gradients[clickCount % gradients.length];
+  document.getElementById('subtitle').textContent = messages[clickCount % messages.length];
+});
+
+document.body.addEventListener('mousemove', function(e) {
+  if (Math.random() > 0.85) {
+    var spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = e.clientX + 'px';
+    spark.style.top = e.clientY + 'px';
+    spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+    spark.style.width = '5px';
+    spark.style.height = '5px';
+    document.body.appendChild(spark);
+    setTimeout(function() { spark.remove(); }, 800);
+  }
+});
+
+setInterval(function() {
+  if (Math.random() > 0.6) createEmoji();
+}, 2000);
+</script>
+</body>
+</html>

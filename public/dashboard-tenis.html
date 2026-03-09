@@ -173,29 +173,30 @@
     var ctx = document.getElementById(id).getContext('2d');
     if(charts[id]) charts[id].destroy();
     charts[id] = new Chart(ctx, {
-      type: type,
+      type: 'bar',
       data: {
         labels: labels,
-        datasets: [{ data: data, backgroundColor: bgColors || COLORS.slice(0, data.length), borderWidth: 0, borderRadius: type==='bar'?6:0 }]
+        datasets: [{ data: data, backgroundColor: bgColors || COLORS.slice(0, data.length), borderWidth: 0, borderRadius: 6 }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: true,
+        indexAxis: type==='horizontalBar' ? 'y' : 'x',
         plugins: {
-          legend: { display: type==='doughnut', position: 'bottom', labels: { boxWidth: 12, padding: 12, font: { size: 11 } } }
+          legend: { display: false }
         },
-        scales: type==='bar' ? {
-          y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#F0F0F0' } },
-          x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } }
-        } : undefined
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: type==='horizontalBar' ? 'transparent' : '#F0F0F0' } },
+          x: { beginAtZero: true, ticks: { font: { size: 10 }, maxRotation: 45, stepSize: 1 }, grid: { color: type==='horizontalBar' ? '#F0F0F0' : 'transparent' } }
+        }
       }
     });
   }
 
-  function renderDoughnut(id, dataMap) {
+  function renderHBar(id, dataMap) {
     var labels = Object.keys(dataMap);
     var data = Object.values(dataMap);
-    makeChart(id, 'doughnut', labels, data);
+    makeChart(id, 'horizontalBar', labels, data);
   }
 
   function renderBar(id, dataMap) {
@@ -231,12 +232,12 @@
       document.getElementById('m-contacto').textContent = rows.filter(function(r){ return r.contacto; }).length;
 
       // Charts
-      renderDoughnut('chart-rol', count(rows, 'rol'));
-      renderDoughnut('chart-deporte', count(rows, 'deporte'));
-      renderDoughnut('chart-frecuencia', count(rows, 'frecuencia'));
-      renderDoughnut('chart-graba', count(rows, 'graba_partidos'));
-      renderDoughnut('chart-conoce', count(rows, 'conoce_servicio'));
-      renderDoughnut('chart-utilidad', count(rows, 'utilidad'));
+      renderHBar('chart-rol', count(rows, 'rol'));
+      renderHBar('chart-deporte', count(rows, 'deporte'));
+      renderHBar('chart-frecuencia', count(rows, 'frecuencia'));
+      renderHBar('chart-graba', count(rows, 'graba_partidos'));
+      renderHBar('chart-conoce', count(rows, 'conoce_servicio'));
+      renderHBar('chart-utilidad', count(rows, 'utilidad'));
 
       // Tipo analisis (comma separated -> individual counts)
       var analisisMap = {};

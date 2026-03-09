@@ -31,6 +31,10 @@
   .detail { display: inline-block; background: #F0F0F0; border-radius: 8px; padding: 0.3rem 0.7rem; font-size: 0.82rem; font-weight: 600; margin: 0.15rem 0.2rem 0.15rem 0; }
   @media (prefers-color-scheme: dark) { .detail { background: #1A1A1A; color: #CCC; } }
 
+  .cal-link { display: inline-block; background: #000; color: #FFF; text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 0.55rem 1.2rem; border-radius: 50px; transition: background 0.15s; }
+  .cal-link:hover { background: #333; }
+  @media (prefers-color-scheme: dark) { .cal-link { background: #FFF; color: #000; } .cal-link:hover { background: #DDD; } }
+
   form { display: flex; flex-direction: column; gap: 1.8rem; }
 
   fieldset { border: none; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -142,6 +146,8 @@
     <span class="detail">19:00 hrs</span>
     <span class="detail">1,5 horas</span>
     <span class="detail">Apoquindo 7935</span>
+    <br><br>
+    <a href="https://calendar.app.google/3uZY9BExnUVQtepi8" target="_blank" rel="noopener" class="cal-link">Agendar en Google Calendar</a>
   </p>
 
   <form id="form">

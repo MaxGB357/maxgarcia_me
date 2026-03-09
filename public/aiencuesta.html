@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clase de IA — 19 de marzo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #FAFAFA;
+    color: #2D3436;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #000; color: #E4E4E4; }
+  }
+
+  main { width: 100%; max-width: 480px; }
+
+  h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+  @media (prefers-color-scheme: dark) { h1 { color: #FAFAFA; } }
+
+  .intro { font-size: 0.9rem; color: #666; margin-bottom: 2rem; line-height: 1.7; }
+  @media (prefers-color-scheme: dark) { .intro { color: #999; } }
+
+  .detail { display: inline-block; background: #F0F0F0; border-radius: 8px; padding: 0.3rem 0.7rem; font-size: 0.82rem; font-weight: 600; margin: 0.15rem 0.2rem 0.15rem 0; }
+  @media (prefers-color-scheme: dark) { .detail { background: #1A1A1A; color: #CCC; } }
+
+  form { display: flex; flex-direction: column; gap: 1.8rem; }
+
+  fieldset { border: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  legend { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem; }
+  legend.error { color: #E53E3E; }
+  @media (prefers-color-scheme: dark) { legend { color: #CCC; } }
+
+  .radio-option {
+    display: flex; align-items: center; gap: 0.75rem;
+    border: 1px solid #DDD; border-radius: 10px;
+    padding: 0.75rem 1rem; cursor: pointer;
+    font-size: 0.88rem; transition: all 0.15s;
+  }
+  .radio-option:hover { border-color: #AAA; }
+  .radio-option.selected { border-color: #000; background: #F5F5F5; font-weight: 500; }
+  @media (prefers-color-scheme: dark) {
+    .radio-option { border-color: #333; color: #BBB; }
+    .radio-option:hover { border-color: #555; }
+    .radio-option.selected { border-color: #FFF; background: #111; color: #FFF; }
+  }
+  .radio-option input { display: none; }
+
+  .dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid #AAA; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .selected .dot { border-color: #000; }
+  .selected .dot::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #000; }
+  @media (prefers-color-scheme: dark) {
+    .dot { border-color: #555; }
+    .selected .dot { border-color: #FFF; }
+    .selected .dot::after { background: #FFF; }
+  }
+
+  .input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .input-group label { font-size: 0.82rem; font-weight: 500; color: #666; }
+  @media (prefers-color-scheme: dark) { .input-group label { color: #999; } }
+
+  input[type="tel"], input[type="email"] {
+    border: 1px solid #DDD; border-radius: 10px;
+    padding: 0.7rem 1rem; font-size: 0.88rem;
+    outline: none; background: #FFF; color: #2D3436;
+    transition: border-color 0.15s;
+  }
+  input[type="tel"]:focus, input[type="email"]:focus { border-color: #888; }
+  @media (prefers-color-scheme: dark) {
+    input[type="tel"], input[type="email"] { background: #111; border-color: #333; color: #E4E4E4; }
+    input[type="tel"]:focus, input[type="email"]:focus { border-color: #666; }
+  }
+
+  hr { border: none; border-top: 1px solid #EEE; }
+  @media (prefers-color-scheme: dark) { hr { border-top-color: #222; } }
+
+  .optional { font-weight: 400; color: #AAA; font-size: 0.82rem; }
+
+  button[type="submit"] {
+    background: #000; color: #FFF; border: none;
+    border-radius: 50px; padding: 0.85rem 1.5rem;
+    font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+  }
+  button[type="submit"]:hover { background: #333; }
+  button[type="submit"]:disabled { opacity: 0.4; cursor: default; }
+  @media (prefers-color-scheme: dark) {
+    button[type="submit"] { background: #FFF; color: #000; }
+    button[type="submit"]:hover { background: #DDD; }
+  }
+
+  .error-msg { font-size: 0.82rem; color: #E53E3E; }
+
+  .success {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center; gap: 1rem;
+    min-height: 60vh;
+  }
+  .success h1 { font-size: 1.8rem; }
+  .success p { color: #666; font-size: 0.95rem; max-width: 320px; }
+  @media (prefers-color-scheme: dark) { .success p { color: #999; } }
+</style>
+</head>
+<body>
+
+<main id="app">
+  <h1>Clase de Inteligencia Artificial</h1>
+  <p class="intro">
+    Voy a hacer una clase el <strong>jueves 19 de marzo</strong> a las <strong>19:00 hrs</strong>.
+    <br><br>
+    <span class="detail">Jueves 19 de marzo</span>
+    <span class="detail">19:00 hrs</span>
+    <span class="detail">Apoquindo 7935</span>
+  </p>
+
+  <form id="form">
+    <!-- Pregunta 1 -->
+    <fieldset id="fs-asistencia">
+      <legend>1. ¿Puedes asistir?</legend>
+      <label class="radio-option" data-value="Sí">
+        <input type="radio" name="asistencia" value="Sí">
+        <span class="dot"></span> Sí
+      </label>
+      <label class="radio-option" data-value="No">
+        <input type="radio" name="asistencia" value="No">
+        <span class="dot"></span> No
+      </label>
+      <label class="radio-option" data-value="No sé">
+        <input type="radio" name="asistencia" value="No sé">
+        <span class="dot"></span> No sé
+      </label>
+    </fieldset>
+
+    <hr>
+
+    <!-- Pregunta 2 -->
+    <fieldset>
+      <legend>2. Datos de contacto <span class="optional">(opcional)</span></legend>
+      <div class="input-group">
+        <label for="telefono">Número de teléfono</label>
+        <input type="tel" id="telefono" placeholder="+56 9 1234 5678">
+      </div>
+      <div class="input-group" style="margin-top:0.5rem;">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" placeholder="tu@email.com">
+      </div>
+    </fieldset>
+
+    <p class="error-msg" id="error" style="display:none;">Por favor selecciona si puedes asistir.</p>
+
+    <button type="submit" id="btn-submit">Enviar respuesta</button>
+  </form>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  var SUPABASE_URL = 'https://orxcxmainkmityvhcqsv.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yeGN4bWFpbmttaXR5dmhjcXN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NDk2NjUsImV4cCI6MjA4ODEyNTY2NX0._iJ3VOx9p9NaEgpUkLa7Cijv-95xfJwMYASoDCI1SUs';
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  var asistencia = '';
+  var form = document.getElementById('form');
+  var error = document.getElementById('error');
+  var btn = document.getElementById('btn-submit');
+  var app = document.getElementById('app');
+
+  // Radio selection
+  document.querySelectorAll('.radio-option').forEach(function(label){
+    label.addEventListener('click', function(){
+      var val = this.getAttribute('data-value');
+      asistencia = val;
+      document.querySelectorAll('#fs-asistencia .radio-option').forEach(function(l){
+        l.classList.remove('selected');
+      });
+      this.classList.add('selected');
+      this.querySelector('input').checked = true;
+      error.style.display = 'none';
+      document.getElementById('fs-asistencia').querySelector('legend').classList.remove('error');
+    });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    if(!asistencia){
+      error.style.display = 'block';
+      document.getElementById('fs-asistencia').querySelector('legend').classList.add('error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    var telefono = document.getElementById('telefono').value.trim() || null;
+    var correo = document.getElementById('correo').value.trim() || null;
+
+    sb.from('ai_encuesta').insert({
+      asistencia: asistencia,
+      telefono: telefono,
+      correo: correo
+    }).then(function(res){
+      if(res.error){
+        btn.disabled = false;
+        btn.textContent = 'Enviar respuesta';
+        error.textContent = 'Error al enviar. Intenta nuevamente.';
+        error.style.display = 'block';
+        return;
+      }
+      app.innerHTML = '<div class="success"><h1>¡Gracias!</h1><p>Tu respuesta fue registrada.</p></div>';
+    });
+  });
+})();
+</script>
+</body>
+</html>

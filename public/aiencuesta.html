@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clase de IA — 19 de marzo</title>
+<title>Encuentro de IA — 19 de marzo</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -115,30 +115,35 @@
 <body>
 
 <main id="app">
-  <h1>Clase de Inteligencia Artificial</h1>
+  <h1>Encuentro de Inteligencia Artificial</h1>
   <p class="intro">
-    Voy a hacer una clase el <strong>jueves 19 de marzo</strong> a las <strong>19:00 hrs</strong>.
+    Te invito a un encuentro de 1,5 horas donde exploraremos c&oacute;mo la Inteligencia Artificial est&aacute; transformando la forma en que trabajamos y tomamos decisiones. Veremos casos pr&aacute;cticos, herramientas que puedes empezar a usar desde el d&iacute;a siguiente, y abriremos un espacio para resolver todas tus dudas. No importa tu nivel de conocimiento: el objetivo es que salgas con una visi&oacute;n clara de c&oacute;mo aprovechar la IA en tu d&iacute;a a d&iacute;a.
     <br><br>
     <span class="detail">Jueves 19 de marzo</span>
     <span class="detail">19:00 hrs</span>
+    <span class="detail">1,5 horas</span>
     <span class="detail">Apoquindo 7935</span>
   </p>
 
   <form id="form">
     <!-- Pregunta 1 -->
     <fieldset id="fs-asistencia">
-      <legend>1. ¿Puedes asistir?</legend>
-      <label class="radio-option" data-value="Sí">
-        <input type="radio" name="asistencia" value="Sí">
-        <span class="dot"></span> Sí
+      <legend>1. ¿C&oacute;mo asistir&aacute;s?</legend>
+      <label class="radio-option" data-value="Presencial">
+        <input type="radio" name="asistencia" value="Presencial">
+        <span class="dot"></span> Presencial
       </label>
-      <label class="radio-option" data-value="No">
-        <input type="radio" name="asistencia" value="No">
-        <span class="dot"></span> No
+      <label class="radio-option" data-value="Meet/Online">
+        <input type="radio" name="asistencia" value="Meet/Online">
+        <span class="dot"></span> Meet / Online
       </label>
-      <label class="radio-option" data-value="No sé">
-        <input type="radio" name="asistencia" value="No sé">
-        <span class="dot"></span> No sé
+      <label class="radio-option" data-value="Por confirmar">
+        <input type="radio" name="asistencia" value="Por confirmar">
+        <span class="dot"></span> Por confirmar
+      </label>
+      <label class="radio-option" data-value="No asistiré">
+        <input type="radio" name="asistencia" value="No asistiré">
+        <span class="dot"></span> No asistir&eacute;
       </label>
     </fieldset>
 
@@ -157,7 +162,7 @@
       </div>
     </fieldset>
 
-    <p class="error-msg" id="error" style="display:none;">Por favor selecciona si puedes asistir.</p>
+    <p class="error-msg" id="error" style="display:none;">Por favor selecciona c&oacute;mo asistir&aacute;s.</p>
 
     <button type="submit" id="btn-submit">Enviar respuesta</button>
   </form>

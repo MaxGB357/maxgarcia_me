@@ -17,15 +17,10 @@ const HERRAMIENTAS_OPTIONS = [
   "ChatGPT",
   "Claude",
   "Gemini",
+  "Microsoft Copilot",
   "Perplexity",
   "Grok",
   "NotebookLM",
-];
-
-const INTERES_OPTIONS = [
-  "Sí, me interesa mucho",
-  "Tal vez, depende de la fecha",
-  "No por ahora",
 ];
 
 const FECHA_OPTIONS = [
@@ -196,16 +191,11 @@ export default function Encuesta() {
   const [herramientas, setHerramientas] = useState<string[]>([]);
   const [herramientasOtros, setHerramientasOtros] = useState("");
   const [casosUsoPendientes, setCasosUsoPendientes] = useState("");
-  const [interes, setInteres] = useState("");
   const [fecha, setFecha] = useState("");
   const [queAprender, setQueAprender] = useState("");
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [intentoEnvio, setIntentoEnvio] = useState(false);
-
-  const showFecha =
-    interes === "Sí, me interesa mucho" ||
-    interes === "Tal vez, depende de la fecha";
 
   const isValid =
     nombre &&
@@ -213,8 +203,7 @@ export default function Encuesta() {
     email &&
     conocimiento &&
     uso &&
-    interes &&
-    (!showFecha || fecha);
+    fecha;
 
   function toggleHerramienta(h: string) {
     setHerramientas((prev) =>
@@ -231,28 +220,29 @@ export default function Encuesta() {
     if (!isValid) return;
 
     setEnviando(true);
-    const { error } = await supabase.from("encuesta_ia").insert({
-      nombre,
-      whatsapp,
-      email,
-      conocimiento_ia: conocimiento,
-      uso_ia: uso,
-      usos_ia: usosDescripcion || null,
-      herramientas_ia:
-        herramientas.length > 0
-          ? herramientas
-              .map((h) =>
-                h === "Otros" && herramientasOtros
-                  ? `Otros: ${herramientasOtros}`
-                  : h
-              )
-              .join(", ")
-          : null,
-      casos_uso_pendientes: casosUsoPendientes || null,
-      interes,
-      fecha_preferida: showFecha ? fecha : "No aplica",
-      que_aprender: queAprender || null,
-    });
+    const { error } = await supabase
+      .from("respuestas_encuesta_clases_abril")
+      .insert({
+        nombre,
+        whatsapp,
+        email,
+        conocimiento_ia: conocimiento,
+        uso_ia: uso,
+        usos_ia: usosDescripcion || null,
+        herramientas_ia:
+          herramientas.length > 0
+            ? herramientas
+                .map((h) =>
+                  h === "Otros" && herramientasOtros
+                    ? `Otros: ${herramientasOtros}`
+                    : h
+                )
+                .join(", ")
+            : null,
+        casos_uso_pendientes: casosUsoPendientes || null,
+        fecha_preferida: fecha,
+        que_aprender: queAprender || null,
+      });
 
     if (!error) {
       setEnviado(true);
@@ -268,7 +258,8 @@ export default function Encuesta() {
             ¡Gracias por responder!
           </h1>
           <p className="max-w-sm text-zinc-600 dark:text-zinc-400">
-            Te contactaremos para confirmar los detalles de la clase.
+            Recibí tu inscripción. Te contactaré por WhatsApp con los detalles
+            de la clase.
           </p>
           <Link
             href="/"
@@ -289,9 +280,9 @@ export default function Encuesta() {
             Clase de Inteligencia Artificial
           </h1>
           <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Estoy organizando una clase presencial y gratuita sobre
-            Inteligencia Artificial. Me encantaría saber si te interesa y
-            cuándo podrías asistir.
+            Estoy organizando una clase presencial sobre Inteligencia
+            Artificial. Completa esta breve encuesta para reservar tu cupo y
+            ayudarme a adaptar el contenido.
           </p>
         </div>
 
@@ -398,29 +389,16 @@ export default function Encuesta() {
           <hr className="border-zinc-200 dark:border-zinc-800" />
 
           <RadioGroup
-            label="9. ¿Te interesaría asistir a una clase presencial gratuita sobre IA?"
-            options={INTERES_OPTIONS}
-            value={interes}
-            onChange={(v) => {
-              setInteres(v);
-              if (v === "No por ahora") setFecha("");
-            }}
-            error={intentoEnvio && !interes}
+            label="9. ¿Qué fecha te acomoda más?"
+            options={FECHA_OPTIONS}
+            value={fecha}
+            onChange={setFecha}
+            error={intentoEnvio && !fecha}
           />
-
-          {showFecha && (
-            <RadioGroup
-              label="10. ¿Qué fecha te acomoda más?"
-              options={FECHA_OPTIONS}
-              value={fecha}
-              onChange={setFecha}
-              error={intentoEnvio && !fecha}
-            />
-          )}
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              {showFecha ? "11" : "10"}. ¿Qué te gustaría aprender sobre IA?{" "}
+              10. ¿Qué te gustaría aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea

@@ -23,13 +23,6 @@ const HERRAMIENTAS_OPTIONS = [
   "NotebookLM",
 ];
 
-const FECHA_OPTIONS = [
-  "Fecha por confirmar 1",
-  "Fecha por confirmar 2",
-  "Fecha por confirmar 3",
-  "Ninguna me sirve",
-];
-
 function RadioGroup({
   label,
   options,
@@ -191,19 +184,13 @@ export default function Encuesta() {
   const [herramientas, setHerramientas] = useState<string[]>([]);
   const [herramientasOtros, setHerramientasOtros] = useState("");
   const [casosUsoPendientes, setCasosUsoPendientes] = useState("");
-  const [fecha, setFecha] = useState("");
   const [queAprender, setQueAprender] = useState("");
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [intentoEnvio, setIntentoEnvio] = useState(false);
 
   const isValid =
-    nombre &&
-    whatsapp &&
-    email &&
-    conocimiento &&
-    uso &&
-    fecha;
+    nombre && whatsapp && email && conocimiento && uso;
 
   function toggleHerramienta(h: string) {
     setHerramientas((prev) =>
@@ -240,7 +227,6 @@ export default function Encuesta() {
                 .join(", ")
             : null,
         casos_uso_pendientes: casosUsoPendientes || null,
-        fecha_preferida: fecha,
         que_aprender: queAprender || null,
       });
 
@@ -386,19 +372,9 @@ export default function Encuesta() {
             />
           </div>
 
-          <hr className="border-zinc-200 dark:border-zinc-800" />
-
-          <RadioGroup
-            label="9. ¿Qué fecha te acomoda más?"
-            options={FECHA_OPTIONS}
-            value={fecha}
-            onChange={setFecha}
-            error={intentoEnvio && !fecha}
-          />
-
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              10. ¿Qué te gustaría aprender sobre IA?{" "}
+              9. ¿Qué te gustaría aprender sobre IA?{" "}
               <span className="font-normal text-zinc-400">(opcional)</span>
             </label>
             <textarea
